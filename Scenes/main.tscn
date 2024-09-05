@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://b73l57oeo5rg3"]
+
+[ext_resource type="PackedScene" uid="uid://tf7sa413t3v0" path="res://Scenes/bird.tscn" id="1_aff3b"]
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_ariho"]
+[ext_resource type="PackedScene" uid="uid://dw0vbfaeie3vy" path="res://Scenes/pipe.tscn" id="2_js5af"]
+[ext_resource type="Texture2D" uid="uid://djnly5ukihu5s" path="res://Art/background-day.png" id="2_jyf03"]
+[ext_resource type="Texture2D" uid="uid://c7r5bgm4qivj" path="res://Art/base.png" id="2_miueb"]
+[ext_resource type="Texture2D" uid="uid://3vn2urtd0lmu" path="res://Art/gameover.png" id="6_caacu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m0acb"]
+size = Vector2(1007, 333)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ariho")
+pipe_scene = ExtResource("2_js5af")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(432, 768)
+scale = Vector2(3, 3)
+texture = ExtResource("2_jyf03")
+
+[node name="Ground" type="Area2D" parent="."]
+z_index = 1000
+position = Vector2(427, 1398)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(2.5, 1.5)
+shape = SubResource("RectangleShape2D_m0acb")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground"]
+scale = Vector2(3, 3)
+texture = ExtResource("2_miueb")
+
+[node name="Ceiling" type="Area2D" parent="."]
+position = Vector2(458, -167)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+position = Vector2(2.5, 1.5)
+shape = SubResource("RectangleShape2D_m0acb")
+
+[node name="Bird" parent="." instance=ExtResource("1_aff3b")]
+top_level = true
+z_index = 1001
+position = Vector2(169, 606)
+
+[node name="PipeTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="GameOver" type="TextureRect" parent="UI"]
+offset_left = 88.0
+offset_top = 241.0
+offset_right = 793.0
+offset_bottom = 397.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_caacu")
+
+[node name="Score" type="RichTextLabel" parent="UI"]
+offset_left = 419.0
+offset_top = 86.0
+offset_right = 459.0
+offset_bottom = 126.0
+size_flags_horizontal = 4
+
+[connection signal="body_shape_entered" from="Ground" to="." method="_on_ground_body_shape_entered"]
+[connection signal="body_shape_entered" from="Ceiling" to="." method="_on_ceiling_body_shape_entered"]
+[connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]

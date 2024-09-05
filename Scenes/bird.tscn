@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://tf7sa413t3v0"]
+
+[ext_resource type="Script" path="res://Scripts/bird.gd" id="1_v0qsi"]
+[ext_resource type="Texture2D" uid="uid://d21n47kdxjw28" path="res://Art/redbird-downflap.png" id="1_ysgcf"]
+[ext_resource type="Texture2D" uid="uid://dum5upqvysr1f" path="res://Art/redbird-midflap.png" id="2_2n75x"]
+[ext_resource type="Texture2D" uid="uid://5sow4xolini6" path="res://Art/redbird-upflap.png" id="3_lh7ax"]
+[ext_resource type="Texture2D" uid="uid://d4ngxedqv1td0" path="res://Art/yellowbird-downflap.png" id="4_gxprq"]
+[ext_resource type="Texture2D" uid="uid://3d42ude1i3cn" path="res://Art/yellowbird-midflap.png" id="5_tedni"]
+[ext_resource type="Texture2D" uid="uid://cqf64y5fhur0u" path="res://Art/yellowbird-upflap.png" id="6_eomvr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jkjt1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_lh7ax")
+}],
+"loop": true,
+"name": &"red_fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2n75x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_ysgcf")
+}],
+"loop": true,
+"name": &"red_jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_eomvr")
+}],
+"loop": true,
+"name": &"yellow_fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_tedni")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gxprq")
+}],
+"loop": true,
+"name": &"yellow_jump",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_up2ps"]
+radius = 38.0
+height = 102.0
+
+[node name="Bird" type="RigidBody2D"]
+mass = 0.5
+script = ExtResource("1_v0qsi")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_jkjt1")
+animation = &"red_jump"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_up2ps")
