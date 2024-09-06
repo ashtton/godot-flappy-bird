@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b73l57oeo5rg3"]
+[gd_scene load_steps=9 format=3 uid="uid://b73l57oeo5rg3"]
 
 [ext_resource type="PackedScene" uid="uid://tf7sa413t3v0" path="res://Scenes/bird.tscn" id="1_aff3b"]
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_ariho"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://djnly5ukihu5s" path="res://Art/background-day.png" id="2_jyf03"]
 [ext_resource type="Texture2D" uid="uid://c7r5bgm4qivj" path="res://Art/base.png" id="2_miueb"]
 [ext_resource type="Texture2D" uid="uid://3vn2urtd0lmu" path="res://Art/gameover.png" id="6_caacu"]
+[ext_resource type="Texture2D" uid="uid://ckriqqeat2ynh" path="res://Art/message.png" id="7_dkl8q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m0acb"]
 size = Vector2(1007, 333)
@@ -13,6 +14,7 @@ size = Vector2(1007, 333)
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ariho")
 pipe_scene = ExtResource("2_js5af")
+bird_scene = ExtResource("1_aff3b")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(432, 768)
@@ -40,11 +42,6 @@ metadata/_edit_group_ = true
 position = Vector2(2.5, 1.5)
 shape = SubResource("RectangleShape2D_m0acb")
 
-[node name="Bird" parent="." instance=ExtResource("1_aff3b")]
-top_level = true
-z_index = 1001
-position = Vector2(169, 606)
-
 [node name="PipeTimer" type="Timer" parent="."]
 wait_time = 3.0
 
@@ -60,11 +57,23 @@ size_flags_vertical = 4
 texture = ExtResource("6_caacu")
 
 [node name="Score" type="RichTextLabel" parent="UI"]
-offset_left = 419.0
-offset_top = 86.0
-offset_right = 459.0
-offset_bottom = 126.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+scale = Vector2(5, 5)
 size_flags_horizontal = 4
+
+[node name="MainScreen" type="TextureRect" parent="UI"]
+offset_left = 163.0
+offset_top = 42.0
+offset_right = 347.0
+offset_bottom = 309.0
+scale = Vector2(3, 3)
+texture = ExtResource("7_dkl8q")
 
 [connection signal="body_shape_entered" from="Ground" to="." method="_on_ground_body_shape_entered"]
 [connection signal="body_shape_entered" from="Ceiling" to="." method="_on_ceiling_body_shape_entered"]

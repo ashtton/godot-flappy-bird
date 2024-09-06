@@ -1,6 +1,9 @@
 extends Node2D
 
 @export var pipe_scene: PackedScene
+@export var bird_scene: PackedScene
+
+var bird = null
 
 var pipes = []
 var score = 0
@@ -8,11 +11,9 @@ var score = 0
 var started = false
 var over = false
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	setup_game()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump"):
 		if over:
@@ -49,13 +50,20 @@ func end_game():
 		over = true
 
 func setup_game():
+	if bird:
+		remove_child(bird)
+	
 	started = false
-	$Bird.position = Vector2(170, 600)
-	$Bird.freeze = true
-	$Bird.show()
 	$UI/GameOver.hide()
 	$UI/Score.show()
+	$UI/MainScreen.show()
+	$UI/Score.hide()
 	$UI/Score.text = "0"
+	bird = bird_scene.instantiate()
+	add_child(bird)
+	bird.freeze = true
+	bird.paused = true
+	bird.position = Vector2(440, 770)
 	
 func start_game():
 	spawn_pipe()
@@ -63,13 +71,17 @@ func start_game():
 	started = true
 	$Bird.freeze = false
 	$PipeTimer.start()
+	$UI/MainScreen.hide()
+	$UI/Score.show()
+	$Bird.paused = false
 
 func restart():
 	over = false
 	for i in pipes:
 		remove_child(i)
-	setup_game()
 	$Bird.dead = false
+	$Bird.paused = true
+	setup_game()
 
 func pipe_cleared():
 	score += 1
